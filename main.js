@@ -1,6 +1,6 @@
 class AsyncGame {
     constructor() {
-        this.API_BASE = 'https://u-workshops.herokuapp.com'
+        this.API_BASE = "https://u-workshops.herokuapp.com";
     }
 
     /* 
@@ -8,12 +8,46 @@ class AsyncGame {
         It's ok if you don't fully understand it yet! You can think of it as a 'blackbox' for now
     */
 
-    async createUser() {
+    async createUser(name) {
         // POST request to the /new_user endpoint
+        try {
+            const response = await fetch(`${this.API_BASE}/new_user`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name }),
+            });
+            const ans = await response.json();
+            console.log(ans);
+            return ans;
+        } catch (error) {
+            console.log("error new user: ", error);
+        }
     }
 
-    async addToQABank() {
+    async addToQABank(YOUR_USER_ID) {
         // POST request to /new_qa
+        try {
+            const response = await fetch(`${this.API_BASE}/new_qa`, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ownerId: YOUR_USER_ID,
+                    question: STRING QUESTION,
+                    answer: "STRING OR INT ANSWER",
+                }),
+            });
+            const ans = await response.json();
+            console.log(ans);
+            return ans;
+        } catch (error) {
+            console.log("error new user: ", error);
+        }
     }
 
     async getAllQuestions() {
@@ -32,16 +66,14 @@ class AsyncGame {
         // GET request to /answer_submissions
     }
 
-    async getUsers(){
+    async getUsers() {
         // GET request to /the_users
     }
 
     async calculateUserScores() {
         // +1 points for questions you've answered correctly
         // -1 points for questions you've answered incorrectly
-
         // This is the most "complicated" method - but you've got this ;)
-
         // Guidelines for this part (ignore if you want an extra challenge!)
         /*
             - Get the users
@@ -62,12 +94,16 @@ class AsyncGame {
     }
 }
 
-const game = new AsyncGame()
+const game = new AsyncGame();
 // Remember the server is unexpected, it might return an error!
 
 // Example of running the game:
-// game.createUser("Frank")
-// game.addToQABank({question: "How many legs does a cat have?", answer: 4, ownerId: YOUR_USER_ID})
+const { userId } = game.createUser("Tom Portugez");
+game.addToQABank({
+    question: "How many legs does a cat have?",
+    answer: 4,
+    ownerId: YOUR_USER_ID,
+});
 
 // game.getAllQuestions()
 // game.answerQuestion({qaId: ID_FROM_SERVER, answer: YOUR_ANSWER, userId: YOUR_USER_ID})
